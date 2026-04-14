@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container-box col-4 mx-auto mt-5">
+<h2>Login</h2>
+
+{% for msg in get_flashed_messages() %}
+<p>{{msg}}</p>
+{% endfor %}
+
+<form method="post">
+<input name="email" placeholder="Email">
+<input type="password" name="password" placeholder="Password">
+<button class="btn btn-light btn-custom">Login</button>
+</form>
+
+</div>
+</body>
+</html>

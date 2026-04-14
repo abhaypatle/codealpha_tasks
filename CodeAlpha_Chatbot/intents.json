@@ -1,0 +1,19 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": ["hi", "hello", "hey"],
+      "responses": ["Hello!", "Hi there!", "Hey! How can I help you?"]
+    },
+    {
+      "tag": "bus",
+      "patterns": ["bus pass", "ticket", "booking"],
+      "responses": ["You can book your bus pass from dashboard."]
+    },
+    {
+      "tag": "bye",
+      "patterns": ["bye", "exit"],
+      "responses": ["Goodbye!", "See you later!"]
+    }
+  ]
+}

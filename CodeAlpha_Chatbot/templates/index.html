@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Voice Chatbot</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI';
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        #chatbox {
+            width: 420px;
+            height: 600px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px black;
+        }
+
+        #chat {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .msg {
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user {
+            background: #22c55e;
+            color: black;
+            margin-left: auto;
+        }
+
+        .bot {
+            background: #1e293b;
+        }
+
+        #inputArea {
+            display: flex;
+        }
+
+        input {
+            width: 60%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: white;
+        }
+
+        button {
+            width: 20%;
+            border: none;
+            cursor: pointer;
+        }
+
+        #sendBtn { background: #06b6d4; }
+        #micBtn { background: orange; }
+    </style>
+</head>
+
+<body>
+
+<div id="chatbox">
+    <div id="chat"></div>
+
+    <div id="inputArea">
+        <input type="text" id="msg" placeholder="Type message...">
+        <button id="sendBtn" onclick="send()">Send</button>
+        <button id="micBtn" onclick="startVoice()">🎤</button>
+    </div>
+</div>
+
+<script>
+function send() {
+    let input = document.getElementById("msg");
+    let message = input.value;
+
+    if (!message.trim()) return;
+
+    addMsg(message, "user");
+    input.value = "";
+
+    fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: message})
+    })
+    .then(res => res.json())
+    .then(data => addMsg(data.response, "bot"));
+}
+
+function addMsg(text, type) {
+    let div = document.createElement("div");
+    div.className = "msg " + type;
+    div.innerHTML = text;
+    document.getElementById("chat").appendChild(div);
+
+    let chat = document.getElementById("chat");
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// 🎤 Voice Input
+function startVoice() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
+
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        let voiceText = event.results[0][0].transcript;
+        document.getElementById("msg").value = voiceText;
+        send();
+    };
+}
+
+// Enter key support
+document.getElementById("msg").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") send();
+});
+
+// Welcome message
+window.onload = () => {
+    addMsg("👋 Hi! I am your AI Voice Chatbot 🚀", "bot");
+};
+</script>
+
+</body>
+</html>

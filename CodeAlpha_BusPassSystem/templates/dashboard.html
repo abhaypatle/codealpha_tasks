@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container-box col-6 mx-auto mt-5">
+<h2>Welcome {{user}}</h2>
+<a href="/logout" class="btn btn-danger btn-custom">Logout</a>
+
+<h3>Book Pass</h3>
+
+<form method="post">
+<input name="source" placeholder="From">
+<input name="destination" placeholder="To">
+<button class="btn btn-light btn-custom">Book</button>
+</form>
+
+<p>{{message}}</p>
+
+{% if qr %}
+<h4>Your QR Ticket</h4>
+<img src="/static/qr/{{qr}}" width="150">
+{% endif %}
+
+<h3>Bookings</h3>
+<ul>
+{% for b in bookings %}
+<li>{{b[2]}} → {{b[3]}} | ₹{{b[4]}}</li>
+{% endfor %}
+</ul>
+
+</div>
+
+</body>
+</html>
